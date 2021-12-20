@@ -1,3 +1,6 @@
+import collections
+import json
+import logging
 import re
 import sqlite3
 
@@ -42,19 +45,50 @@ def fill_the_table(date, dataset):
     # Connect to the database
     con = sqlite3.connect('covid19-informator.sqlite')
     # Save the dataset to table with Date name
-    dataset.to_sql(date, con=con)
-    # Close connection
-    con.close()
+    try:
+        with con:
+            dataset.to_sql(date, con=con)
+    except sqlite3.IntegrityError:
+        print('Error during insert data')
+        logging.error('Error during insert data')
+    finally:
+        # Close connection
+        con.close()
 
 
 def if_the_table_exists(table_name):
     con = sqlite3.connect('covid19-informator.sqlite')
     cur = con.cursor()
+    # Check if the table exists
     cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=:table_name",
-                         {"table_name": table_name})
+                {"table_name": table_name})
     result = cur.fetchone()
     con.close()
     if result is not None:
         return True
     else:
         return False
+
+
+def get_info_from_db(table_name, region_name):
+    con = sqlite3.connect('covid19-informator.sqlite')
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM '{table_name}' WHERE Province_State='{region_name}'")
+    result = cur.fetchall()
+    # Save the result to the JSON
+    result_list = []
+    for row in result:
+        dict = collections.OrderedDict()
+        dict['index'] = row[0]
+        dict['Province'] = row[1]
+        dict['Country'] = row[2]
+        dict['Confirmed'] = row[3]
+        dict['Deaths'] = row[4]
+        dict['Recovered'] = row[5]
+        dict['Active'] = row[6]
+        dict['Incident_Rate'] = row[7]
+        dict['Case_Fatality_Ratio'] = row[8]
+        result_list.append(dict)
+    result_json = json.dumps(result_list)
+    con.close()
+    return result_json

@@ -1,5 +1,6 @@
 # Welcome to the covid19-informator
 ## Description
+A simple Web app for getting COVID-19 cases information in Ukraine  
 
 [COVID-19 Data Repository](https://github.com/CSSEGISandData/COVID-19) by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University
 ***
