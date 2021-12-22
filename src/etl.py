@@ -76,7 +76,6 @@ def get_info_from_db(table_name, region_name):
     cur.execute(f"SELECT * FROM '{table_name}' WHERE Province_State='{region_name}'")
     result = cur.fetchall()
     # Save the result to the JSON
-    result_list = []
     for row in result:
         dict = collections.OrderedDict()
         dict['index'] = row[0]
@@ -88,7 +87,5 @@ def get_info_from_db(table_name, region_name):
         dict['Active'] = row[6]
         dict['Incident_Rate'] = row[7]
         dict['Case_Fatality_Ratio'] = row[8]
-        result_list.append(dict)
-    result_json = json.dumps(result_list)
     con.close()
-    return result_json
+    return dict

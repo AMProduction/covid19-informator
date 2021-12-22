@@ -10,8 +10,100 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 </head>
-<body style="background-color:#f1faee;">
+<body style="background-color:#f1faee; padding-bottom: 70px;">
 
+<nav class="navbar navbar-light" style="background-color: #e63946;">
+    <div class="container-fluid">
+        <a class="navbar-brand bi bi-info-square" href="#">
+            covid19-informator
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-3 mb-3">
+    <div class="row row-cols-4 justify-content-around">
+        <div class="col">
+            <div class="card text-center border-secondary" style="background-color: #a8dadc;">
+                <div class="card-header">
+                    Confirmed cases
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ data['Confirmed'] | int }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center border-secondary" style="background-color: #a8dadc;">
+                <div class="card-header">
+                    Deaths
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ data['Deaths'] | int }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center border-secondary" style="background-color: #a8dadc;">
+                <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                     title="Incidence Rate = cases per 100,000 persons">
+                    Incidence Rate
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ '{:.2f}'.format(data['Incident_Rate']) }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center border-secondary" style="background-color: #a8dadc;">
+                <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                     title="Case-Fatality Ratio (%) = Number recorded deaths / Number cases">
+                    Case-Fatality Ratio (%)
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ '{:.2f}'.format(data['Case_Fatality_Ratio']) }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form>
+        <div class="mt-3 mb-3">
+            <select class="form-select" aria-label="Default select example" data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Choose the region">
+                <option selected value="1">Whole country</option>
+                <option value="1">Cherkasy Oblast</option>
+                <option value="2">Chernihiv Oblast</option>
+                <option value="3">Chernivtsi Oblast</option>
+                <option value="3">Crimea Republic</option>
+                <option value="3">Dnipropetrovsk Oblast</option>
+                <option value="3">Donetsk Oblast</option>
+                <option value="3">Ivano-Frankivsk Oblast</option>
+                <option value="3">Kharkiv Oblast</option>
+                <option value="3">Kherson Oblast</option>
+                <option value="3">Khmelnytskyi Oblast</option>
+                <option value="3">Kiev</option>
+                <option value="3">Kiev Oblast</option>
+                <option value="3">Kirovohrad Oblast</option>
+                <option value="3">Luhansk Oblast</option>
+                <option value="3">Lviv Oblast</option>
+                <option value="3">Mykolaiv Oblast</option>
+                <option value="3">Odessa Oblast</option>
+                <option value="3">Poltava Oblast</option>
+                <option value="3">Rivne Oblast</option>
+                <option value="3">Sevastopol</option>
+                <option value="3">Sumy Oblast</option>
+                <option value="3">Ternopil Oblast</option>
+                <option value="3">Vinnytsia Oblast</option>
+                <option value="3">Volyn Oblast</option>
+                <option value="3">Zakarpattia Oblast</option>
+                <option value="3">Zaporizhia Oblast</option>
+                <option value="3">Zhytomyr Oblast</option>
+            </select>
+        </div>
+    </form>
+</div>
 <div class="navbar fixed-bottom navbar-light" style="background-color: #1d3557;">
     <div class="container-fluid">
         <span class="navbar-text text-light mx-auto">
@@ -20,5 +112,11 @@
         </span>
     </div>
 </div>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
 </body>
 </html>
