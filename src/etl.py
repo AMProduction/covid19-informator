@@ -1,5 +1,4 @@
 import collections
-import json
 import logging
 import re
 import sqlite3
@@ -32,9 +31,24 @@ def clean_dataset(dataset_url):
     ukraine_dataset[["Confirmed", "Deaths", "Recovered", "Active", "Incident_Rate", "Case_Fatality_Ratio"]] = \
         ukraine_dataset[["Confirmed", "Deaths", "Recovered", "Active", "Incident_Rate", "Case_Fatality_Ratio"]].apply(
             pd.to_numeric, errors='coerce')
-    # Add total row
-    ukraine_dataset.loc['all'] = ukraine_dataset.sum(numeric_only=True)
-    ukraine_dataset.fillna(0, inplace=True)
+    # Some calculations
+    confirmed_total = ukraine_dataset['Confirmed'].sum()
+    deaths_total = ukraine_dataset['Deaths'].sum()
+    incident_rate_median = ukraine_dataset['Incident_Rate'].median()
+    case_fatality_ratio_median = ukraine_dataset['Case_Fatality_Ratio'].median()
+    # Total row
+    total_data = {'Province_State': ['all'],
+                  'Country_Region': ['Ukraine'],
+                  'Confirmed': [confirmed_total],
+                  'Deaths': [deaths_total],
+                  'Recovered': [0],
+                  'Active': [0],
+                  'Incident_Rate': [incident_rate_median],
+                  'Case_Fatality_Ratio': [case_fatality_ratio_median]
+                  }
+    total_row = pd.DataFrame(total_data, index=['0'])
+    # Add the new total row
+    ukraine_dataset = ukraine_dataset.append(total_row)
     return ukraine_dataset
 
 

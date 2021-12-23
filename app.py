@@ -15,12 +15,12 @@ def home():
     # Check if table/data exists
     import src.etl as etl
     if etl.if_the_table_exists(yesterday):
-        result_json = etl.get_info_from_db(yesterday, '0')
+        result_json = etl.get_info_from_db(yesterday, 'all')
     else:
         df_url = etl.get_daily_dataset_url(yesterday)
         result_dataset = etl.clean_dataset(df_url)
         etl.fill_the_table(yesterday, result_dataset)
-        result_json = etl.get_info_from_db(yesterday, '0')
+        result_json = etl.get_info_from_db(yesterday, 'all')
     return render_template('index.html', data=result_json)
 
 
