@@ -70,42 +70,45 @@
     </div>
 </div>
 <div class="container">
-    <form>
+    <form action="http://localhost:5000/show" method="post">
         <div class="input-group mt-3 mb-3">
             <span class="input-group-text bi bi-calendar3" id="basic-addon1"></span>
-            <input type="text" id="datepicker" aria-label="Datepicker">
-            <select class="form-select" aria-label="Default select example" data-bs-toggle="tooltip"
+            <input type="text" id="datepicker" name="datepicker">
+            <select class="form-select" id="region" name="region" data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
                     title="Choose the region">
-                <option selected value="1">Whole country</option>
-                <option value="1">Cherkasy Oblast</option>
-                <option value="2">Chernihiv Oblast</option>
-                <option value="3">Chernivtsi Oblast</option>
-                <option value="3">Crimea Republic</option>
-                <option value="3">Dnipropetrovsk Oblast</option>
-                <option value="3">Donetsk Oblast</option>
-                <option value="3">Ivano-Frankivsk Oblast</option>
-                <option value="3">Kharkiv Oblast</option>
-                <option value="3">Kherson Oblast</option>
-                <option value="3">Khmelnytskyi Oblast</option>
-                <option value="3">Kiev</option>
-                <option value="3">Kiev Oblast</option>
-                <option value="3">Kirovohrad Oblast</option>
-                <option value="3">Luhansk Oblast</option>
-                <option value="3">Lviv Oblast</option>
-                <option value="3">Mykolaiv Oblast</option>
-                <option value="3">Odessa Oblast</option>
-                <option value="3">Poltava Oblast</option>
-                <option value="3">Rivne Oblast</option>
-                <option value="3">Sevastopol</option>
-                <option value="3">Sumy Oblast</option>
-                <option value="3">Ternopil Oblast</option>
-                <option value="3">Vinnytsia Oblast</option>
-                <option value="3">Volyn Oblast</option>
-                <option value="3">Zakarpattia Oblast</option>
-                <option value="3">Zaporizhia Oblast</option>
-                <option value="3">Zhytomyr Oblast</option>
+                <option selected value="all">Whole country</option>
+                <option value="Cherkasy Oblast">Cherkasy Oblast</option>
+                <option value="Chernihiv Oblast">Chernihiv Oblast</option>
+                <option value="Chernivtsi Oblast">Chernivtsi Oblast</option>
+                <option value="Crimea Republic">Crimea Republic</option>
+                <option value="Dnipropetrovsk Oblast">Dnipropetrovsk Oblast</option>
+                <option value="Donetsk Oblast">Donetsk Oblast</option>
+                <option value="Ivano-Frankivsk Oblast">Ivano-Frankivsk Oblast</option>
+                <option value="Kharkiv Oblast">Kharkiv Oblast</option>
+                <option value="Kherson Oblast">Kherson Oblast</option>
+                <option value="Khmelnytskyi Oblast">Khmelnytskyi Oblast</option>
+                <option value="Kiev">Kiev</option>
+                <option value="Kiev Oblast">Kiev Oblast</option>
+                <option value="Kirovohrad Oblast">Kirovohrad Oblast</option>
+                <option value="Luhansk Oblast">Luhansk Oblast</option>
+                <option value="Lviv Oblast">Lviv Oblast</option>
+                <option value="Mykolaiv Oblast">Mykolaiv Oblast</option>
+                <option value="Odessa Oblast">Odessa Oblast</option>
+                <option value="Poltava Oblast">Poltava Oblast</option>
+                <option value="Rivne Oblast">Rivne Oblast</option>
+                <option value="Sevastopol">Sevastopol</option>
+                <option value="Sumy Oblast">Sumy Oblast</option>
+                <option value="Ternopil Oblast">Ternopil Oblast</option>
+                <option value="Vinnytsia Oblast">Vinnytsia Oblast</option>
+                <option value="Volyn Oblast">Volyn Oblast</option>
+                <option value="Zakarpattia Oblast">Zakarpattia Oblast</option>
+                <option value="Zaporizhia Oblast">Zaporizhia Oblast</option>
+                <option value="Zhytomyr Oblast">Zhytomyr Oblast</option>
             </select>
+        </div>
+        <div class="col text-center">
+            <button type="submit" class="btn btn-lg btn-outline-secondary">Show</button>
         </div>
     </form>
 </div>

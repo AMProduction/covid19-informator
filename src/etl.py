@@ -84,10 +84,10 @@ def if_the_table_exists(table_name):
         return False
 
 
-def get_info_from_db(table_name, region_name):
+def get_info_from_db(table_name, region):
     con = sqlite3.connect('covid19-informator.sqlite')
     cur = con.cursor()
-    cur.execute(f"SELECT * FROM '{table_name}' WHERE Province_State='{region_name}'")
+    cur.execute(f"SELECT * FROM '{table_name}' WHERE Province_State='{region}'")
     result = cur.fetchall()
     # Save the result to the JSON
     for row in result:
