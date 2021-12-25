@@ -2,6 +2,7 @@ import collections
 import logging
 import re
 import sqlite3
+from datetime import date, timedelta
 
 import pandas as pd
 import requests
@@ -9,13 +10,21 @@ import requests
 
 def get_daily_dataset_url(date):
     # Check date format (only MM-DD-YYYY is acceptable)
-    if re.search("^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-20(20|21|22)$", date) is None:
+    if re.search("^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-20(19|20|21|22)$", date) is None:
         raise ValueError('Date format error')
     base_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/'
     file_extension = '.csv'
     # final dataset URL
     dataset_url = base_url + date + file_extension
     return dataset_url
+
+
+def is_source_exists(url):
+    response = requests.get(url)
+    if response.ok:
+        return True
+    else:
+        return False
 
 
 def clean_dataset(dataset_url):
@@ -53,9 +62,6 @@ def clean_dataset(dataset_url):
 
 
 def fill_the_table(date, dataset):
-    # Check date format (only MM-DD-YYYY is acceptable)
-    if re.search("^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-20(20|21|22)$", date) is None:
-        raise ValueError('Date format error')
     # Connect to the database
     con = sqlite3.connect('covid19-informator.sqlite')
     # Save the dataset to table with Date name
@@ -70,7 +76,7 @@ def fill_the_table(date, dataset):
         con.close()
 
 
-def if_the_table_exists(table_name):
+def is_the_table_exists(table_name):
     con = sqlite3.connect('covid19-informator.sqlite')
     cur = con.cursor()
     # Check if the table exists
@@ -103,3 +109,27 @@ def get_info_from_db(table_name, region):
         dict['Case_Fatality_Ratio'] = row[8]
     con.close()
     return dict
+
+
+def etl(search_date, region_code):
+    # Check if table exists/data already in DB
+    if is_the_table_exists(search_date):
+        # If YES - just get the data
+        result_json = get_info_from_db(search_date, region_code)
+    else:
+        # If NO:
+        df_url = get_daily_dataset_url(search_date)
+        # Check if .csv is exists
+        # If YES - download and process
+        if is_source_exists(df_url):
+            result_dataset = clean_dataset(df_url)
+            fill_the_table(search_date, result_dataset)
+            result_json = get_info_from_db(search_date, region_code)
+        # If NO - get yesterday data
+        else:
+            today = date.today()
+            # Get and format yesterday date
+            yesterday = today - timedelta(days=1)
+            yesterday = yesterday.strftime('%m-%d-%Y')
+            result_json = get_info_from_db(yesterday, 'all')
+    return result_json
